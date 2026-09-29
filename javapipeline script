@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('git') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Rythamtribhuwan/java2.git'
+            }
+        }
+
+        stage('build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('deploy') {
+            steps {
+                sh '''
+                   export JENKINS_NODE_COOKIE=dontkillme
+                    /app/tomcat/bin/shutdown.sh || true
+                    sleep 5
+                   rm -rf /app/tomcat/webapps/java.war
+                   rm -rf /app/tomcat/webapps/java
+                   cp target/webapp.war /app/tomcat/webapps/java.war
+                   /app/tomcat/bin/startup.sh
+                   '''
+            }
+        }
+    }
+}
