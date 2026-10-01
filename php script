@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('git') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Rythamtribhuwan/php-project.git'
+            }
+        }
+        
+        stage('deploy'){
+            steps{
+                 sh '''
+            rm -rf /var/www/html/myphp/*
+            cp -r ./* /var/www/html/myphp/
+            
+            echo "php project deployed"
+        '''
+            }
+        }
+    }
+}
