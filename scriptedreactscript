@@ -1,0 +1,24 @@
+node {
+
+    stage('git') {
+        git branch: 'main', url: 'https://github.com/Rythamtribhuwan/sample-reactproject.git'
+    }
+
+    stage('build') {
+        sh '''
+        npm installTrigger builds remotely (e.g., from scripts)
+?
+Pipeline
+Define your Pipeline using Groovy directly or pull it from source control.
+Definition 
+        npm run build
+        '''
+    }
+
+    stage('deploy') {
+        sh '''
+        pm2 restart react1 || pm2 serve dist 3001 --name react1 --spa
+        pm2 save
+        '''
+    }
+}
