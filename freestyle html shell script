@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "html project deployment started"
+
+cp -r Contact.html README.md about.html index.html /var/www/html/
+
+systemctl restart httpd
+
+echo "html project deployment successfully"
