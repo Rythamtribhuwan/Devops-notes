@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('git code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Rythamtribhuwan/pythonflaskproject.git'
+            }
+        }
+
+        stage('install dependencies') {
+            steps {
+                sh '''
+                    python3 -m pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('deploy flask app') {
+            steps {
+                sh '''
+                    echo "stopping old flask application...."
+
+                    pkill -f "python3 app.py" || true
+
+                    nohup python3 app.py > flask.log 2>&1 &
+
+                    sleep 3
+
+                    echo "flask application started."
+
+                    curl http://127.0.0.1:5000/
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Flask Application Deployed Successfully!'
+        }
+
+        failure {
+            echo 'Flask Deployment Failed!'
+        }
+    }
+}
