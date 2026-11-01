@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('git') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Rythamtribhuwan/node1.git'
+            }
+        }
+        stage('deploy'){
+            steps {
+                sh '''
+                npm i
+                pm2 restart node1 || pm2 start index.js --name node1
+                pm2 save
+                '''
+            }
+        }
+    }
+}
