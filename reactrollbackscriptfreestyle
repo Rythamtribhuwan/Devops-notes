@@ -1,0 +1,9 @@
+mkdir -p /var/www/html/react1
+
+cd /var/www/html/react1
+rm -rf /var/www/html/react1/*
+
+curl -fL -u admin:pass@123 -o /var/www/html/react1/react-nexus.tar http://localhost:8081/repository/react-nexus/react-nexus/react-nexus/$VERSION/react-nexus-$VERSION.tar
+
+tar -xvf react-nexus.tar
+cp -r dist/* /var/www/html/react1/
